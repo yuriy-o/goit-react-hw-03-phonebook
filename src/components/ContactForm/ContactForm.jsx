@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import scss from './contacts-form.module.scss';
+
+import MaskedInput from 'react-text-mask';
 
 import { Button, Form, Label, Span, Input } from './ContactForm.styled';
 
@@ -59,13 +62,36 @@ export class ContactForm extends Component {
 
         <Label>
           <Span>Number</Span>
-          <Input
+          <MaskedInput
+            className={scss.mask}
             value={number}
             onChange={handleChange}
             type="tel"
-            placeholder="Enter your phone number"
             name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            // placeholder="Enter a phone number"
+            placeholder="+38 (0__) ___-____"
+            mask={[
+              '+',
+              '3',
+              '8',
+              ' ',
+              '(',
+              '0',
+              /[1-9]/,
+              /\d/,
+              ')',
+              ' ',
+              /\d/,
+              /\d/,
+              /\d/,
+              '-',
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+            ]}
+            guide={true}
+            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />

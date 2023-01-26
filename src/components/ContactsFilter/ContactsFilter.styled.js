@@ -17,7 +17,7 @@ export const Text = styled.p`
 `;
 export const Input = styled.input`
   margin-bottom: 10px;
-  width: 100%;
+  width: 97%;
   height: 30px;
   font-size: 20px;
 

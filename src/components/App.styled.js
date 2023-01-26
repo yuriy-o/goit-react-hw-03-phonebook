@@ -6,7 +6,7 @@ export const Container = styled.section`
   margin: 20px auto;
   padding: 20px 50px;
   text-align: center;
-  max-width: 300px;
+  max-width: 400px;
 `;
 
 export const H1 = styled.h1`
