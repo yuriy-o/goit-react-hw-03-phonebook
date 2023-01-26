@@ -24,20 +24,17 @@ export class ContactForm extends Component {
 
     //?  Забираємо onSubmitForm з this.props
     const { onSubmitForm } = this.props;
-    //? та в onSubmitForm передає на гору в стейт
+    //? передаємо onSubmitForm на гору в стейт
     const result = onSubmitForm({ ...this.state });
 
-    if (result) {
+    if (!result) {
       this.reset();
     }
   };
 
   //! Очищення форми після submit
   reset = () => {
-    this.setState({
-      name: '',
-      number: '',
-    });
+    this.setState({ name: '', number: '' });
   };
 
   render() {
@@ -49,11 +46,11 @@ export class ContactForm extends Component {
         <Label>
           <Span>Name</Span>
           <Input
+            value={name}
+            onChange={handleChange}
             type="text"
             placeholder="Enter your first and second name"
             name="name"
-            value={name}
-            onChange={handleChange}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
@@ -63,11 +60,11 @@ export class ContactForm extends Component {
         <Label>
           <Span>Number</Span>
           <Input
+            value={number}
+            onChange={handleChange}
             type="tel"
             placeholder="Enter your phone number"
             name="number"
-            value={number}
-            onChange={handleChange}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required

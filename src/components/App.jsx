@@ -3,20 +3,19 @@ import { nanoid } from 'nanoid';
 
 // import PropTypes from 'prop-types';
 
-import { Container, H1, H2, Warning } from './App.styled';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { ContactsFilter } from './ContactsFilter/ContactsFilter';
 
-import { contacts } from './contacts.js';
+import { Container, H1, H2, Warning } from './App.styled';
 
 export class App extends Component {
   state = {
-    contacts: [...contacts],
+    contacts: [],
     filter: '',
   };
 
-  //? componentDidMount спрацьовує тільки одни раз
+  //? componentDidMount cпрацьовує тільки одни раз
   //! (contacts?.length) теж само як => (contacts && contacts?.length)
   componentDidMount() {
     const contacts = JSON.parse(localStorage.getItem('contacts'));
@@ -40,18 +39,21 @@ export class App extends Component {
       return alert(`${name} is already in the contacts`);
     }
 
-    this.setState(prevState => {
-      const { contacts } = prevState; //! тут можемо використати prevState, т.як всередині
-      // const { contacts } = this.state; //! Або такий запис, тобто тут prevState === this.state
-      const newContact = {
-        id: nanoid(),
-        name: name.trim(),
-        number: number.trim(),
-      };
+    //! тут можемо використати prevState, т.як всередині
+    // const { contacts } = this.state; //! Або такий запис, тобто тут prevState === this.state
+    const newContact = {
+      id: nanoid(),
+      name: name.trim(),
+      number: number.trim(),
+    };
 
-      return { contacts: [newContact, ...contacts] };
+    this.setState(prevState => {
+      const { contacts } = prevState;
+
+      return { contacts: [newContact, ...contacts], name: '', number: '' };
     });
   };
+
   //! Функція перевірка імені перед додаванням з урахуванням регистру
   isDublicateContact(name) {
     const normalizeName = name.toLowerCase();
@@ -88,14 +90,14 @@ export class App extends Component {
   };
 
   render() {
-    const { removeContact, handleInputChange } = this;
+    const { removeContact, handleInputChange, formSubmitHandler } = this;
     const contacts = this.filterContactByName();
     const isContacts = Boolean(contacts.length);
 
     return (
       <Container>
         <H1>Phonebook</H1>
-        <ContactForm onSubmitForm={this.formSubmitHandler} />
+        <ContactForm onSubmitForm={formSubmitHandler} />
         <H2>Contacts</H2>
         <ContactsFilter handleInputChange={handleInputChange} />
 
