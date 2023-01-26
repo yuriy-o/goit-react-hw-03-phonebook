@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom/client';
 import { App } from 'components/App';
 import './index.css';
 
-// import contacts from './components/dataContacts/contacts.json';
+import contacts from './components/dataContacts/contacts.json';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
-    {/* <App initialContacts={contacts} /> */}
+    <App initialContacts={contacts} />
   </React.StrictMode>
 );

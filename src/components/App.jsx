@@ -15,20 +15,19 @@ export class App extends Component {
     filter: '',
   };
 
-  //? componentDidMount cпрацьовує тільки одни раз
-  //! (contacts?.length) теж само як => (contacts && contacts?.length)
   componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem('contacts'));
-    if (contacts?.length) {
-      this.setState({ contacts });
+    const savedContacts = localStorage.getItem('contacts');
+
+    if (savedContacts === null) {
+      return this.setState({ contacts: this.props.initialContacts });
     }
+
+    this.setState({ contacts: JSON.parse(savedContacts) });
   }
 
-  //? Спрацьовує після кожного оновлення state
   componentDidUpdate(prevProps, prevState) {
     const { contacts } = this.state;
     if (prevState.contacts.length !== contacts.length) {
-      console.log('завантаження componentDidUpdate');
       localStorage.setItem('contacts', JSON.stringify(contacts));
     }
   }
