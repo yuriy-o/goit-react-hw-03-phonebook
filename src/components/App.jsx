@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
-
+// import { nanoid } from 'nanoid';
 // import PropTypes from 'prop-types';
 
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { ContactsFilter } from './ContactsFilter/ContactsFilter';
+import { nanoidUA } from './nanoidUA';
 
 import { Container, H1, H2, Warning } from './App.styled';
 
@@ -38,14 +38,13 @@ export class App extends Component {
       return alert(`${name} is already in the contacts`);
     }
 
-    //! тут можемо використати prevState, т.як всередині
-    // const { contacts } = this.state; //! Або такий запис, тобто тут prevState === this.state
     const newContact = {
-      id: nanoid(),
+      id: nanoidUA(), //ToDo ===> викликаю самописну функцію, яка генерує id за шаблоном 'UA-xxx'
       name: name.trim(),
       number: number.trim(),
     };
 
+    //? або ===> const { contacts } = this.state; якщо зміну об'являємо зовні
     this.setState(prevState => {
       const { contacts } = prevState;
 

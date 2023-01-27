@@ -1,6 +1,6 @@
 [
- { "id": "id-1", "name": "Rosie Simpson", "number": "+38 (067) 459-1256" },
- { "id": "id-2", "name": "Hermione Kline", "number": "+38 (050) 443-8912" },
- { "id": "id-3", "name": "Eden Clements", "number": "+38 (063) 645-1779" },
- { "id": "id-4", "name": "Annie Copeland", "number": "+38 (044) 227-9126" }
+ { "id": "UA-001", "name": "Rosie Simpson", "number": "+38 (067) 459-1256" },
+ { "id": "UA-002", "name": "Hermione Kline", "number": "+38 (050) 443-8912" },
+ { "id": "UA-003", "name": "Eden Clements", "number": "+38 (063) 645-1779" },
+ { "id": "UA-004", "name": "Annie Copeland", "number": "+38 (044) 227-9126" }
 ]
