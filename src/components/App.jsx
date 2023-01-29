@@ -36,35 +36,30 @@ export class App extends Component {
   }
 
   //! (addContact)
-  formSubmitHandler = ({ name, number }) => {
-    if (this.isDublicateContact(name)) {
-      return alert(`${name} is already in the contacts`);
-    }
+  formHandleSubmit = (values, { resetForm }) => {
+    resetForm();
 
-    const newContact = {
-      id: nanoidUA(), //ToDo ===> викликаю самописну функцію, яка генерує id за шаблоном 'UA-xxx'
-      name: name.trim(),
-      number: number.trim(),
-    };
+    const { name, number } = values;
+    const contact = { name, number };
 
-    //? або ===> const { contacts } = this.state; якщо зміну об'являємо зовні
-    this.setState(prevState => {
-      const { contacts } = prevState;
+    const dublicateContact = this.findDublicateContact(
+      contact,
+      this.state.contacts
+    );
 
-      return { contacts: [newContact, ...contacts], name: '', number: '' };
-    });
+    dublicateContact
+      ? alert(`${contact.name} is already in contacts`)
+      : this.setState(prevState => ({
+          contacts: [...prevState.contacts, { ...values, id: nanoidUA() }],
+        }));
   };
 
-  //! Функція перевірка імені перед додаванням з урахуванням регистру
-  isDublicateContact(name) {
-    const normalizeName = name.toLowerCase();
-    const { contacts } = this.state;
-    const contactCheck = contacts.find(contact => {
-      return contact.name.toLowerCase() === normalizeName;
-    });
-
-    return Boolean(contactCheck);
-  }
+  //! Функція перевірки імені перед додаванням з урахуванням регистру
+  findDublicateContact = (contact, contactsList) => {
+    return contactsList.find(
+      item => item.name.toLowerCase() === contact.name.toLowerCase()
+    );
+  };
 
   removeContact = id => {
     this.setState(({ contacts }) => {
@@ -91,14 +86,14 @@ export class App extends Component {
   };
 
   render() {
-    const { removeContact, handleInputChange, formSubmitHandler } = this;
+    const { removeContact, handleInputChange, formHandleSubmit } = this;
     const contacts = this.filterContactByName();
     const isContacts = Boolean(contacts.length);
 
     return (
       <Container>
         <H1>Phonebook</H1>
-        <ContactForm onSubmitForm={formSubmitHandler} />
+        <ContactForm onSubmitForm={formHandleSubmit} />
         <H2>Contacts</H2>
         <ContactsFilter handleInputChange={handleInputChange} />
 

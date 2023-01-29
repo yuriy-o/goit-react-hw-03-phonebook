@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+// import React from 'react';
 import PropTypes from 'prop-types';
-// import { Field, Form, Formik } from 'formik';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import {
   Button,
@@ -9,104 +10,68 @@ import {
   Span,
   Input,
   InputMask,
+  Error,
 } from './ContactForm.styled';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .matches(
+      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+      "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+    )
+    .required(),
+  number: Yup.string()
+    .min(4)
+    .max(12)
+    .matches(
+      /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
+      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
+    )
+    .required(),
+});
 
-  //! Записує данні з інпуту в STATE
-  handleChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
-  };
+const initialValues = {
+  name: '',
+  number: '',
+};
 
-  //! (addContact)
-  handleSubmit = e => {
-    e.preventDefault();
-
-    // this.props.onSubmitForm(this.state); //? Короткий запис без умови, ↓↓↓ або ↓↓↓
-
-    //?  Забираємо onSubmitForm з this.props
-    const { onSubmitForm } = this.props;
-    //? передаємо onSubmitForm на гору в стейт
-    const result = onSubmitForm({ ...this.state });
-
-    if (!result) {
-      this.reset();
-    }
-  };
-
-  //! Очищення форми після submit
-  reset = () => {
-    this.setState({ name: '', number: '' });
-  };
-
-  render() {
-    const { handleSubmit, handleChange } = this;
-    const { name, number } = this.state;
-
-    return (
-      <FormStyle onSubmit={handleSubmit}>
+export const ContactForm = ({ onSubmitForm }) => {
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={onSubmitForm}
+      validationSchema={SignupSchema}
+    >
+      <FormStyle>
         <Label>
           <Span>Name</Span>
           <Input
-            value={name}
-            onChange={handleChange}
+            name="name"
             type="text"
             placeholder="Enter your first and second name"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
+          <Error component="span" name="name" />
         </Label>
 
         <Label>
           <Span>Number</Span>
           <InputMask
-            value={number}
-            onChange={handleChange}
-            type="tel"
             name="number"
-            // placeholder="Enter a phone number"
-            placeholder="+38 (0__) ___-____"
-            mask={[
-              '+',
-              '3',
-              '8',
-              ' ',
-              '(',
-              '0',
-              /[1-9]/,
-              /\d/,
-              ')',
-              ' ',
-              /\d/,
-              /\d/,
-              /\d/,
-              '-',
-              /\d/,
-              /\d/,
-              /\d/,
-              /\d/,
-            ]}
-            guide={true}
-            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            type="tel"
+            placeholder="Enter a phone number"
+            // placeholder="+38 (0__) ___-____"
             required
           />
+          <Error component="span" name="number" />
         </Label>
 
         <Button type="submit">Add contact</Button>
       </FormStyle>
-    );
-  }
-}
+    </Formik>
+  );
+};
 
-//! ВИДАЄ ПОМИЛКУ ЯКЩО .isRequired
 ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
+  onSubmitForm: PropTypes.func.isRequired,
 };

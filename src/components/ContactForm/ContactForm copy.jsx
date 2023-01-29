@@ -1,108 +1,112 @@
-// import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
-// import scss from './contacts-form.module.scss';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+// import { Field, Form, Formik } from 'formik';
 
-// import MaskedInput from 'react-text-mask';
+import {
+  Button,
+  FormStyle,
+  Label,
+  Span,
+  Input,
+  InputMask,
+} from './ContactForm.styled';
 
-// import { Button, Form, Label, Span, Input } from './ContactForm.styled';
+export class ContactForm extends Component {
+  state = {
+    name: '',
+    number: '',
+  };
 
-// export class ContactForm extends Component {
-//   state = {
-//     name: '',
-//     number: '',
-//   };
+  //! Записує данні з інпуту в STATE
+  handleChange = e => {
+    const { name, value } = e.currentTarget;
+    this.setState({ [name]: value });
+  };
 
-//   //! Записує данні з інпуту в STATE
-//   handleChange = e => {
-//     const { name, value } = e.currentTarget;
-//     this.setState({ [name]: value });
-//   };
+  //! (addContact)
+  handleSubmit = e => {
+    e.preventDefault();
 
-//   //! (addContact)
-//   handleSubmit = e => {
-//     e.preventDefault();
+    // this.props.onSubmitForm(this.state); //? Короткий запис без умови, ↓↓↓ або ↓↓↓
 
-//     // this.props.onSubmitForm(this.state); //? Короткий запис без умови, ↓↓↓ або ↓↓↓
+    //?  Забираємо onSubmitForm з this.props
+    const { onSubmitForm } = this.props;
+    //? передаємо onSubmitForm на гору в стейт
+    const result = onSubmitForm({ ...this.state });
 
-//     //?  Забираємо onSubmitForm з this.props
-//     const { onSubmitForm } = this.props;
-//     //? передаємо onSubmitForm на гору в стейт
-//     const result = onSubmitForm({ ...this.state });
+    if (!result) {
+      this.reset();
+    }
+  };
 
-//     if (!result) {
-//       this.reset();
-//     }
-//   };
+  //! Очищення форми після submit
+  reset = () => {
+    this.setState({ name: '', number: '' });
+  };
 
-//   //! Очищення форми після submit
-//   reset = () => {
-//     this.setState({ name: '', number: '' });
-//   };
+  render() {
+    const { handleSubmit, handleChange } = this;
+    const { name, number } = this.state;
 
-//   render() {
-//     const { handleSubmit, handleChange } = this;
-//     const { name, number } = this.state;
+    return (
+      <FormStyle onSubmit={handleSubmit}>
+        <Label>
+          <Span>Name</Span>
+          <Input
+            value={name}
+            onChange={handleChange}
+            type="text"
+            placeholder="Enter your first and second name"
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required
+          />
+        </Label>
 
-//     return (
-//       <Form onSubmit={handleSubmit}>
-//         <Label>
-//           <Span>Name</Span>
-//           <Input
-//             value={name}
-//             onChange={handleChange}
-//             type="text"
-//             placeholder="Enter your first and second name"
-//             name="name"
-//             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-//             required
-//           />
-//         </Label>
+        <Label>
+          <Span>Number</Span>
+          <InputMask
+            value={number}
+            onChange={handleChange}
+            type="tel"
+            name="number"
+            // placeholder="Enter a phone number"
+            placeholder="+38 (0__) ___-____"
+            mask={[
+              '+',
+              '3',
+              '8',
+              ' ',
+              '(',
+              '0',
+              /[1-9]/,
+              /\d/,
+              ')',
+              ' ',
+              /\d/,
+              /\d/,
+              /\d/,
+              '-',
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+            ]}
+            guide={true}
+            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+          />
+        </Label>
 
-//         <Label>
-//           <Span>Number</Span>
-//           <MaskedInput
-//             className={scss.mask}
-//             value={number}
-//             onChange={handleChange}
-//             type="tel"
-//             name="number"
-//             // placeholder="Enter a phone number"
-//             placeholder="+38 (0__) ___-____"
-//             mask={[
-//               '+',
-//               '3',
-//               '8',
-//               ' ',
-//               '(',
-//               '0',
-//               /[1-9]/,
-//               /\d/,
-//               ')',
-//               ' ',
-//               /\d/,
-//               /\d/,
-//               /\d/,
-//               '-',
-//               /\d/,
-//               /\d/,
-//               /\d/,
-//               /\d/,
-//             ]}
-//             guide={true}
-//             // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-//             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-//             required
-//           />
-//         </Label>
+        <Button type="submit">Add contact</Button>
+      </FormStyle>
+    );
+  }
+}
 
-//         <Button type="submit">Add contact</Button>
-//       </Form>
-//     );
-//   }
-// }
-
-// //! ВИДАЄ ПОМИЛКУ ЯКЩО .isRequired
-// ContactForm.propTypes = {
-//   onSubmit: PropTypes.func,
-// };
+//! ВИДАЄ ПОМИЛКУ ЯКЩО .isRequired
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func,
+};

@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import MaskedInput from 'react-text-mask';
+// import MaskedInput from 'react-text-mask';
+import { Form, Field, ErrorMessage } from 'formik';
+
+export const FormStyle = styled(Form)`
+  margin-bottom: 20px;
+`;
 
 export const Label = styled.label`
   display: flex;
@@ -13,10 +18,8 @@ export const Span = styled.span`
   color: #3a7999;
   margin-bottom: 10px;
 `;
-export const FormStyle = styled.form`
-  margin-bottom: 20px;
-`;
-export const Input = styled.input`
+
+export const Input = styled(Field)`
   margin-bottom: 10px;
   width: 97%;
   height: 30px;
@@ -28,7 +31,8 @@ export const Input = styled.input`
   }
 `;
 
-export const InputMask = styled(MaskedInput)`
+// export const InputMask = styled(MaskedInput)`
+export const InputMask = styled(Field)`
   margin-bottom: 10px;
   width: 97%;
   height: 30px;
@@ -60,4 +64,8 @@ export const Button = styled.button`
     box-shadow: inset 0 0 0 3px #3a7999;
     transform: scale(1.05);
   }
+`;
+export const Error = styled(ErrorMessage)`
+  color: red;
+  margin-bottom: 5px;
 `;
