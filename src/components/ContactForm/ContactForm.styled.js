@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import MaskedInput from 'react-text-mask';
 
 export const Label = styled.label`
   display: flex;
@@ -12,7 +13,7 @@ export const Span = styled.span`
   color: #3a7999;
   margin-bottom: 10px;
 `;
-export const Form = styled.form`
+export const FormStyle = styled.form`
   margin-bottom: 20px;
 `;
 export const Input = styled.input`
@@ -26,6 +27,19 @@ export const Input = styled.input`
     font-style: italic;
   }
 `;
+
+export const InputMask = styled(MaskedInput)`
+  margin-bottom: 10px;
+  width: 97%;
+  height: 30px;
+  font-size: 20px;
+
+  ::placeholder {
+    font-size: 14px;
+    font-style: italic;
+  }
+`;
+
 export const Button = styled.button`
   display: block;
   width: 150px;

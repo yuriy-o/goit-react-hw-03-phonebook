@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { ContactsFilter } from './ContactsFilter/ContactsFilter';
-import { nanoidUA } from './nanoidUA';
+import { nanoidUA } from './additions/nanoidUA';
 
 import { Container, H1, H2, Warning } from './App.styled';
 
@@ -16,19 +16,22 @@ export class App extends Component {
   };
 
   componentDidMount() {
+    console.log('Mount');
     const savedContacts = localStorage.getItem('contacts');
+    const parseContacts = JSON.parse(savedContacts);
 
     if (savedContacts === null) {
       return this.setState({ contacts: this.props.initialContacts });
     }
-
-    this.setState({ contacts: JSON.parse(savedContacts) });
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { contacts } = this.state;
-    if (prevState.contacts.length !== contacts.length) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
+    console.log('Update');
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   }
 

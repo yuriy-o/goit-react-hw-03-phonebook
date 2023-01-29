@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import scss from './contacts-form.module.scss';
+// import { Field, Form, Formik } from 'formik';
 
-import MaskedInput from 'react-text-mask';
+import {
+  Button,
+  FormStyle,
+  Label,
+  Span,
+  Input,
+  InputMask,
+} from './ContactForm.styled';
 
-import { Button, Form, Label, Span, Input } from './ContactForm.styled';
-
-//! форма це завжди класовий компонент
 export class ContactForm extends Component {
   state = {
     name: '',
@@ -45,7 +49,7 @@ export class ContactForm extends Component {
     const { name, number } = this.state;
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <FormStyle onSubmit={handleSubmit}>
         <Label>
           <Span>Name</Span>
           <Input
@@ -62,8 +66,7 @@ export class ContactForm extends Component {
 
         <Label>
           <Span>Number</Span>
-          <MaskedInput
-            className={scss.mask}
+          <InputMask
             value={number}
             onChange={handleChange}
             type="tel"
@@ -98,7 +101,7 @@ export class ContactForm extends Component {
         </Label>
 
         <Button type="submit">Add contact</Button>
-      </Form>
+      </FormStyle>
     );
   }
 }
