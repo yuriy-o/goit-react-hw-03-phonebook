@@ -11,7 +11,7 @@ import {
   InputMask,
 } from './ContactForm.styled';
 
-export class ContactForm extends Component {
+export class ContactFormMask extends Component {
   state = {
     name: '',
     number: '',
@@ -107,6 +107,6 @@ export class ContactForm extends Component {
 }
 
 //! ВИДАЄ ПОМИЛКУ ЯКЩО .isRequired
-ContactForm.propTypes = {
+ContactFormMask.propTypes = {
   onSubmit: PropTypes.func,
 };

@@ -48,7 +48,6 @@ export const ContactForm = ({ onSubmitForm }) => {
           <Input
             name="name"
             type="text"
-            autofocus
             placeholder="Enter your first and second name"
             required
           />
